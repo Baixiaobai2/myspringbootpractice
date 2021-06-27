@@ -8,4 +8,12 @@ public interface DataService {
 
     List<DataBean> getList();
 
+    List<DataBean> getDatat();
+
+    List<DataBean> getDatad();
+
+    List<DataBean> getListById(int id);
+
+    List<DataBean> getListByDB();
+
 }

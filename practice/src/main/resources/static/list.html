@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>国内疫情数据</title>
+    <link rel="stylesheet" th:href="@{/bootstrap.css}">
+</head>
+<body>
+<!--只有放在static下才能直接访问页面-->
+<h2> 具体情况如下：</h2>
+<br>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>地区</th>
+        <!--<th>新增确诊</th>-->
+        <th>累计确诊</th>
+        <th>治愈</th>
+        <th>死亡</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data:${dataBeanList}">
+        <td th:text="${data.name}">area</td>
+        <!--<td th:text="${data.confirmAdd}">confirmAdd</td>-->
+        <td th:text="${data.confirm}">confirm</td>
+        <td th:text="${data.heal}">heal</td>
+        <td th:text="${data.dead}">dead</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

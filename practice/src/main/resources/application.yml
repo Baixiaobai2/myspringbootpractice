@@ -1,2 +1,13 @@
 server:
   port: 8090
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jd?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST
+    username: root
+    password: baiyufeng
+
+
+#mybatis:
+#  mapper1-locations: classpath*:mapper.xml
+#  type-aliases-package: com.mf.practice.bean
