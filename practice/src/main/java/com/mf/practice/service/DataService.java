@@ -1,10 +1,11 @@
 package com.mf.practice.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.mf.practice.bean.DataBean;
 
 import java.util.List;
 
-public interface DataService {
+public interface DataService extends IService<DataBean> {
 
     List<DataBean> getList();
 
@@ -14,6 +15,6 @@ public interface DataService {
 
     List<DataBean> getListById(int id);
 
-    List<DataBean> getListByDB();
+
 
 }

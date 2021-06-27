@@ -42,13 +42,13 @@ public class DataController {
         return modelAndView;
     }
 
-    @GetMapping("/getListByDB")
-    public ModelAndView getListByDB(){
-        ModelAndView modelAndView=new ModelAndView();
-        List<DataBean> dataBeanList=dataService.getListByDB();
-        modelAndView.addObject("dataBeanList",dataBeanList);
-        modelAndView.setViewName("list");
-        return modelAndView;
-    }
+//    @GetMapping("/getListByDB")
+//    public ModelAndView getListByDB(){
+//        ModelAndView modelAndView=new ModelAndView();
+//        List<DataBean> dataBeanList=dataService.
+//        modelAndView.addObject("dataBeanList",dataBeanList);
+//        modelAndView.setViewName("list");
+//        return modelAndView;
+//    }
 
 }

@@ -61,18 +61,18 @@
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-data-jpa</artifactId>-->
         <!--</dependency>-->
-        <!--&lt;!&ndash;mybatisplus依赖&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.baomidou</groupId>-->
-            <!--<artifactId>mybatisplus-spring-boot-starter</artifactId>-->
-            <!--<version>1.0.5</version>-->
-        <!--</dependency>-->
-        <!--tkmybatis依赖-->
+        <!--mybatisplus依赖-->
         <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>2.1.5</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.2.0</version>
         </dependency>
+        <!--tkmybatis依赖-->
+        <!--<dependency>-->
+            <!--<groupId>tk.mybatis</groupId>-->
+            <!--<artifactId>mapper-spring-boot-starter</artifactId>-->
+            <!--<version>2.1.5</version>-->
+        <!--</dependency>-->
         <!--&lt;!&ndash;freemarker依赖&ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->

@@ -2,13 +2,20 @@ package com.mf.practice.data;
 
 import com.google.gson.Gson;
 import com.mf.practice.bean.DataBean;
+import com.mf.practice.bean.GraphBean;
+import com.mf.practice.service.DataServiceImp;
+import com.mf.practice.util.HttpClientUtil;
 import com.mf.practice.util.HttpURLConnectionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 //直接获得json资源
+@Component
 public class DataHandler {
 
     public static List<DataBean> getList() {
@@ -35,7 +42,8 @@ public class DataHandler {
 
     public static List<DataBean> getData(){
         String url = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
-        String str=HttpURLConnectionUtil.doGet(url);
+        String str=HttpURLConnectionUtil.doGet(url);//原生
+//        String str= HttpClientUtil.doGet(url);//工具包
         Gson gson=new Gson();
         HashMap hashMap=gson.fromJson(str,HashMap.class);
         String subStr=(String) hashMap.get("data");
@@ -57,6 +65,80 @@ public class DataHandler {
         return totalData;
     }
 
+    // @PostContruct  修饰方法使用，在服务器加载servlet时运行，只会被执行一次
+    // 初始化数据时常用，方法会在依赖注入完成后自动调用
+    @Autowired
+    private DataServiceImp dataServiceImp;
+
+    @PostConstruct
+    public void saveData() {
+        System.out.println("初始化数据存储");
+        List<DataBean> dataBeans = getData();
+
+        //先清空再存入  只保留最新的
+        dataServiceImp.remove(null);
+        dataServiceImp.saveBatch(dataBeans);
+    }
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    //定时更新
+    //  cron  计划任务   6个/7个 时间元素  * 是通用符
+    //  1  秒     0-59
+    //  2  分钟   0-59
+    //  3  小时   0-23
+    //  4  日期   1-31
+    //  5  月份   1-12
+    //  6  星期   1-7
+    //  7  年     1970-2099
+
+
+    //  固定频率任务   fixedRate = 10000  按照指定频率执行(每10s一次)
+    //     如果方法的执行时间  超过了频率时间  比如方法要执行15s
+    //     会在方法执行完成后  立即执行下一次任务
+//    @Scheduled(fixedRate = 10000)
+
+    //  固定间隔任务   fixedDelay = 10000  上一次任务执行完成后，间隔到下一次任务执行的时间
+    //     比如第0秒执行任务  执行15s  第25s开始执行下一次任务
+//    @Scheduled(fixedDelay = 10000)
+
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void updateData() {
+        System.out.println("当前时间：" + dateFormat.format(new Date()));
+
+        System.out.println("更新数据存储");
+        List<DataBean> dataBeans = getData();
+
+        //先清空再存入  只保留最新的
+        dataServiceImp.remove(null);
+        dataServiceImp.saveBatch(dataBeans);
+    }
+
+    public static List<GraphBean> getGraphData(){
+
+        String str = HttpClientUtil.doGet("https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5");
+
+        Gson gson = new Gson();
+        Map map = gson.fromJson(str, Map.class);
+
+        String subStr = (String) map.get("data");
+        Map subMap = gson.fromJson(subStr, Map.class);
+
+        ArrayList list = (ArrayList) subMap.get("chinaDayList");
+
+        List<GraphBean> graphBeans = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Map tmp = (Map)list.get(i);
+            String date = (String)tmp.get("date");
+            double confirm = (Double) tmp.get("confirm");
+            double suspect = (Double) tmp.get("suspect");
+
+            GraphBean graphBean = new GraphBean(date,(int)confirm,(int)suspect);
+            graphBeans.add(graphBean);
+        }
+
+        return graphBeans;
+    }
 
 
 }

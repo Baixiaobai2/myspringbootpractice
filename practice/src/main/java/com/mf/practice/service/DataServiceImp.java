@@ -1,15 +1,16 @@
 package com.mf.practice.service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mf.practice.bean.DataBean;
 import com.mf.practice.data.DataHandler;
 import com.mf.practice.data.JsoupHandler;
 import com.mf.practice.mapper.DataMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class DataServiceImp implements DataService{
+public class DataServiceImp extends ServiceImpl<DataMapper,DataBean>
+        implements DataService{
     @Override
     public List<DataBean> getList() {
         return DataHandler.getList();
@@ -26,10 +27,5 @@ public class DataServiceImp implements DataService{
             return JsoupHandler.getData();//d
         }
     }
-    @Autowired
-    private DataMapper dataMapper;
 
-    public List<DataBean> getListByDB(){
-        return dataMapper.selectAll();
-    }
 }

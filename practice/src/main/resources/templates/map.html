@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="echarts/china.js"></script>
+    <!--<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>-->
+</head>
+<body>
+
+<!--教程相关文章 https://www.w3cschool.cn/echarts_tutorial/echarts_tutorial-7pbk2gm8.html-->
+
+<div id="main" style="width: 1000px;height:700px;"></div>
+
+<script th:inline="javascript">
+
+    var dataStr = [[${mapData}]];
+
+    function randomValue() {
+        return Math.round(Math.random() * 1000);
+    }
+
+    option = {
+        title: {
+            text: '疫情地图',
+            subtext: '仅供参考',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        visualMap: {
+            min: 0,
+            max: 100000,
+            left: 'left',
+            top: 'bottom',
+            text: ['High', 'Low'],
+            splitList: [
+                {start: 10000, end: 100000},
+                {start: 1000, end: 10000},
+                {start: 500, end: 1000},
+                {start: 100, end: 500},
+                {start: 0, end: 100},
+            ],
+            color: ['#5475f5', '#9feaa5', '#85daef', '#74e2ca', '#e6ac53'],
+            calculable: true,
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        series: [
+            {
+                name: '确诊数量',
+                type: 'map',
+                mapType: 'china',
+                roam: false,
+                label: {
+                    normal: {
+                        // formatter: '{b}',
+                        position: 'center',
+                        show: true,
+                        textStyle: {
+                            color: 'rgba(0,0,0,0.4)'
+                        }
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data: JSON.parse(dataStr)
+
+                // data:[
+                //     {name: '北京', value: randomValue()},
+                //     {name: '天津', value: randomValue()},
+                //     {name: '上海', value: randomValue()},
+                //     {name: '重庆', value: randomValue()},
+                //     {name: '河北', value: randomValue()},
+                //     {name: '河南', value: randomValue()},
+                //     {name: '云南', value: randomValue()},
+                //     {name: '辽宁', value: randomValue()},
+                //     {name: '黑龙江', value: randomValue()},
+                //     {name: '湖南', value: randomValue()},
+                //     {name: '安徽', value: randomValue()},
+                //     {name: '山东', value: randomValue()},
+                //     {name: '新疆', value: randomValue()},
+                //     {name: '江苏', value: randomValue()},
+                //     {name: '浙江', value: randomValue()},
+                //     {name: '江西', value: randomValue()},
+                //     {name: '湖北', value: randomValue()},
+                //     {name: '广西', value: randomValue()},
+                //     {name: '甘肃', value: randomValue()},
+                //     {name: '山西', value: randomValue()},
+                //     {name: '内蒙古', value: randomValue()},
+                //     {name: '陕西', value: randomValue()},
+                //     {name: '吉林', value: randomValue()},
+                //     {name: '福建', value: randomValue()},
+                //     {name: '贵州', value: randomValue()},
+                //     {name: '广东', value: randomValue()},
+                //     {name: '青海', value: randomValue()},
+                //     {name: '西藏', value: randomValue()},
+                //     {name: '四川', value: randomValue()},
+                //     {name: '宁夏', value: randomValue()},
+                //     {name: '海南', value: randomValue()},
+                //     {name: '台湾', value: randomValue()},
+                //     {name: '香港', value: randomValue()},
+                //     {name: '澳门', value: randomValue()}
+                // ]
+            }
+        ]
+    };
+
+    var chart = echarts.init(document.getElementById("main"));
+    chart.setOption(option)
+
+</script>
+
+</body>
+</html>
